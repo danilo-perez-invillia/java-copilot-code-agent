@@ -32,6 +32,40 @@
   --info-light: #d1ecf1;
 }
 
+/* Dark theme variables */
+body.dark-theme {
+  /* Primary colors remain the same for branding */
+  --primary: #3d5afe;
+  --primary-light: #6c7eb8;
+  --primary-dark: #1a237e;
+  --primary-text: #ffffff;
+
+  /* Secondary colors remain consistent */
+  --secondary: #ff9800;
+  --secondary-light: #ffb74d;
+  --secondary-dark: #f57c00;
+  --secondary-text: #ffffff;
+
+  /* Dark theme neutral colors */
+  --background: #121212;
+  --surface: #1e1e1e;
+  --text-primary: #ffffff;
+  --text-secondary: #b3b3b3;
+  --border: #404040;
+  --border-light: #2a2a2a;
+  --border-focus: #555555;
+
+  /* Dark theme feedback colors */
+  --success: #4caf50;
+  --success-light: #2e2e2e;
+  --warning: #ff9800;
+  --warning-light: #2e2e2e;
+  --error: #f44336;
+  --error-light: #2e2e2e;
+  --info: #2196f3;
+  --info-light: #2e2e2e;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -617,6 +651,9 @@ footer {
   position: absolute;
   top: 10px;
   right: 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 #user-status {
@@ -663,4 +700,19 @@ footer {
 
 #logout-button:hover {
   background-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Theme toggle button */
+#theme-toggle {
+  min-width: 40px;
+  justify-content: center;
+}
+
+#theme-icon {
+  font-size: 1.1rem;
+  transition: transform 0.3s ease;
+}
+
+#theme-toggle:hover #theme-icon {
+  transform: scale(1.1);
 }
