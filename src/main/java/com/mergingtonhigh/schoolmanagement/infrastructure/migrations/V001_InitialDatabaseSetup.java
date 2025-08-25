@@ -206,6 +206,17 @@ public class V001_InitialDatabaseSetup {
                                 ActivityType.COMMUNITY);
                 communityService.setParticipants(List.of("grace@mergington.edu", "aiden@mergington.edu"));
                 mongoTemplate.save(communityService);
+
+                // Manga Maniacs
+                Activity mangaManiacs = new Activity(
+                                "Manga Maniacs",
+                                "Explore as histórias fantásticas dos personagens mais interessantes dos Mangás japoneses (romances gráficos)",
+                                "Terças-feiras, 19:00 - 20:30",
+                                new ScheduleDetails(List.of("Tuesday"), LocalTime.of(19, 0), LocalTime.of(20, 30)),
+                                15,
+                                ActivityType.ARTS);
+                mangaManiacs.setParticipants(List.of("sofia@mergington.edu", "leonardo@mergington.edu"));
+                mongoTemplate.save(mangaManiacs);
         }
 
         private void seedTeachers() {
@@ -246,7 +257,7 @@ public class V001_InitialDatabaseSetup {
                                 "Clube de Xadrez", "Aula de Programação", "Fitness Matinal", "Time de Futebol",
                                 "Time de Basquete", "Clube de Arte", "Clube de Teatro", "Clube de Matemática",
                                 "Equipe de Debates", "Oficina de Robótica", "Olimpíada de Ciências",
-                                "Torneio de Xadrez", "Serviço Comunitário")), Activity.class);
+                                "Torneio de Xadrez", "Serviço Comunitário", "Manga Maniacs")), Activity.class);
 
                 // Remove all seeded teachers
                 mongoTemplate.remove(new Query(Criteria.where("_id").in("admin", "mrodriguez", "mchen", "principal")),
