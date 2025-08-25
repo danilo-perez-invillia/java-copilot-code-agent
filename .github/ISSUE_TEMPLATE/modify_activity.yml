@@ -1,0 +1,178 @@
+name: ✏️ Modificar Atividade Existente
+description: Solicitar mudanças em uma atividade que já existe
+title: "[MODIFICAR] "
+labels: ["enhancement", "activity-modification"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## ✏️ Modificação de Atividade Existente
+        
+        Use este formulário para solicitar mudanças em atividades que já existem no sistema.
+        
+        **Para o agente Copilot:** Esta é uma solicitação para modificar uma atividade existente no sistema.
+
+  - type: dropdown
+    id: activity-to-modify
+    attributes:
+      label: Atividade a Modificar
+      description: Qual atividade você quer modificar?
+      options:
+        - Chess Club
+        - Art Club
+        - Drama Club
+        - Science Fair Prep
+        - Math Olympiad Training
+        - Programming Class
+        - Debate Team
+        - Environmental Club
+        - Music Band
+        - Basketball Team
+        - Soccer Practice
+        - Outra (especificar abaixo)
+    validations:
+      required: true
+
+  - type: input
+    id: other-activity
+    attributes:
+      label: Outra Atividade
+      description: Se escolheu "Outra" acima, digite o nome exato da atividade
+      placeholder: "Ex: Clube de Fotografia"
+
+  - type: checkboxes
+    id: modification-type
+    attributes:
+      label: O que você quer modificar?
+      description: Marque todas as mudanças necessárias
+      options:
+        - label: Horário (dias da semana ou horas)
+          value: schedule
+        - label: Capacidade máxima de participantes
+          value: capacity
+        - label: Descrição da atividade
+          value: description
+        - label: Nome da atividade
+          value: name
+        - label: Categoria/Tipo da atividade
+          value: type
+        - label: Professor responsável
+          value: teacher
+
+  - type: textarea
+    id: schedule-changes
+    attributes:
+      label: Mudanças de Horário
+      description: Se marcou "Horário" acima, descreva as mudanças necessárias
+      placeholder: |
+        Ex: 
+        - Mudar de segunda e quarta para terça e quinta
+        - Alterar horário de 15:30-17:00 para 16:00-17:30
+        - Adicionar encontro no sábado de manhã
+
+  - type: input
+    id: new-capacity
+    attributes:
+      label: Nova Capacidade
+      description: Se marcou "Capacidade", qual deve ser o novo número máximo?
+      placeholder: "Ex: 20"
+
+  - type: textarea
+    id: new-description
+    attributes:
+      label: Nova Descrição
+      description: Se marcou "Descrição", escreva a nova descrição completa
+      placeholder: "Ex: Uma oportunidade aprimorada para estudantes desenvolverem habilidades artísticas através de pintura, escultura e arte digital..."
+
+  - type: input
+    id: new-name
+    attributes:
+      label: Novo Nome
+      description: Se marcou "Nome", qual deve ser o novo nome da atividade?
+      placeholder: "Ex: Clube de Arte Digital"
+
+  - type: dropdown
+    id: new-type
+    attributes:
+      label: Nova Categoria
+      description: Se marcou "Categoria", qual deve ser o novo tipo?
+      options:
+        - Esportes
+        - Artes
+        - Acadêmico
+        - Comunidade
+        - Tecnologia
+
+  - type: input
+    id: new-teacher
+    attributes:
+      label: Novo Professor Responsável
+      description: Se marcou "Professor responsável", quem será o novo responsável?
+      placeholder: "Ex: Prof. Santos"
+
+  - type: textarea
+    id: reason-for-change
+    attributes:
+      label: Motivo da Mudança
+      description: Por que essas mudanças são necessárias?
+      placeholder: |
+        Ex: 
+        - Conflito com outras atividades no horário atual
+        - Muitos estudantes interessados, precisamos de mais vagas
+        - Professor atual não pode mais conduzir a atividade
+    validations:
+      required: true
+
+  - type: dropdown
+    id: urgency
+    attributes:
+      label: Urgência
+      description: Quão urgente é esta mudança?
+      options:
+        - Baixa - pode aguardar algumas semanas
+        - Média - seria bom implementar em 1-2 semanas
+        - Alta - precisamos implementar antes da próxima semana
+
+  - type: textarea
+    id: impact-considerations
+    attributes:
+      label: Impacto nos Estudantes
+      description: Como essa mudança afetará os estudantes já inscritos?
+      placeholder: |
+        Ex: 
+        - Todos os estudantes atuais podem continuar no novo horário
+        - Alguns estudantes podem ter conflito com o novo horário
+        - Precisamos avisar todos sobre as mudanças
+
+  - type: markdown
+    attributes:
+      value: |
+        ---
+        
+        ## 📋 Para o Agente de Codificação Copilot
+        
+        **Critérios de Aceitação:**
+        - [ ] Identificar a atividade correta no banco de dados
+        - [ ] Aplicar as modificações solicitadas mantendo a integridade dos dados
+        - [ ] Atualizar estudantes inscritos conforme necessário
+        - [ ] Validar que mudanças de horário não quebram filtros do frontend
+        - [ ] Testar que a interface reflete as mudanças corretamente
+        - [ ] Verificar se mudanças de capacidade não violam inscrições existentes
+        
+        **Dicas de Implementação:**
+        - Para mudanças simples, pode usar update direto no repositório
+        - Para mudanças complexas, considere criar nova migração Mongock
+        - Se mudar nome da atividade, cuidado com referências de estudantes inscritos
+        - Mudanças de horário requerem update do objeto `ScheduleDetails`
+        - Mudanças de tipo requerem update do enum `ActivityType`
+        - Teste todos os filtros do frontend após mudanças
+        - Se reduzir capacidade, verifique se não há mais inscritos que o novo limite
+        
+        **Contexto do Sistema:**
+        - Atividades são identificadas pelo campo `name` (ID)
+        - Estudantes inscritos são array de emails na atividade
+        - Frontend filtra por tipo, dias e faixas de horário
+        - ScheduleDetails contém dias (array) e horários (LocalTime)
+        - Mudanças devem manter consistência com validações existentes
