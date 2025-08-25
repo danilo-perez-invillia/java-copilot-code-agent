@@ -1,0 +1,184 @@
+name: ✨ Solicitação de Nova Funcionalidade
+description: Sugerir melhorias ou novas funcionalidades para o sistema
+title: "[FEATURE] "
+labels: ["enhancement", "feature-request"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## ✨ Solicitação de Nova Funcionalidade
+        
+        Use este formulário para sugerir melhorias ou novas funcionalidades para o sistema de atividades.
+        
+        **Para o agente Copilot:** Esta é uma solicitação de nova funcionalidade para melhorar o sistema.
+
+  - type: input
+    id: feature-title
+    attributes:
+      label: Título da Funcionalidade
+      description: Dê um nome curto e descritivo para sua ideia
+      placeholder: "Ex: Relatório de frequência dos estudantes"
+    validations:
+      required: true
+
+  - type: textarea
+    id: feature-description
+    attributes:
+      label: Descrição da Funcionalidade
+      description: Explique detalhadamente o que você gostaria que fosse implementado
+      placeholder: |
+        Ex: Gostaria de poder gerar relatórios mostrando a frequência dos estudantes em cada atividade, incluindo dados como:
+        - Número total de estudantes inscritos
+        - Estudantes mais ativos
+        - Atividades mais populares
+        - Gráficos de participação por mês
+    validations:
+      required: true
+
+  - type: dropdown
+    id: feature-category
+    attributes:
+      label: Categoria da Funcionalidade
+      description: Em que área do sistema esta funcionalidade se encaixa?
+      options:
+        - Interface do Usuário (cores, layout, usabilidade)
+        - Relatórios e Exportação de Dados
+        - Gestão de Estudantes
+        - Gestão de Atividades
+        - Sistema de Notificações
+        - Autenticação e Segurança
+        - Mobile/Responsividade
+        - Integração com outros sistemas
+        - Outro
+    validations:
+      required: true
+
+  - type: textarea
+    id: current-workflow
+    attributes:
+      label: Como você faz isso atualmente?
+      description: Descreva como você resolve essa necessidade hoje (se é que consegue)
+      placeholder: |
+        Ex: Atualmente tenho que abrir cada atividade individualmente e contar manualmente quantos estudantes estão inscritos. Para fazer relatórios, anoto tudo em papel ou numa planilha separada.
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected-benefit
+    attributes:
+      label: Benefício Esperado
+      description: Como essa funcionalidade tornaria seu trabalho mais fácil?
+      placeholder: |
+        Ex: Economizaria pelo menos 2 horas por semana que gasto coletando dados manualmente. Também me permitiria identificar rapidamente atividades que precisam de mais divulgação ou que estão superlotadas.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: user-type
+    attributes:
+      label: Quem se beneficiaria?
+      description: Quem mais usaria essa funcionalidade?
+      options:
+        - Apenas professores
+        - Apenas administradores
+        - Professores e administradores
+        - Estudantes também
+        - Pais/responsáveis também
+        - Toda a comunidade escolar
+    validations:
+      required: true
+
+  - type: textarea
+    id: ui-suggestions
+    attributes:
+      label: Sugestões de Interface
+      description: Como você imagina que essa funcionalidade apareceria na tela?
+      placeholder: |
+        Ex: 
+        - Um novo botão "Relatórios" no menu principal
+        - Uma página com gráficos e tabelas
+        - Opção de exportar para PDF ou Excel
+        - Filtros por data, atividade e professor
+
+  - type: dropdown
+    id: technical-complexity
+    attributes:
+      label: Complexidade Técnica Percebida
+      description: Na sua opinião, quão complexo seria implementar isso?
+      options:
+        - Simples - parece ser apenas uma mudança pequena
+        - Médio - envolve algumas partes do sistema
+        - Complexo - parece exigir mudanças grandes
+        - Não sei avaliar
+
+  - type: dropdown
+    id: priority-level
+    attributes:
+      label: Prioridade
+      description: Quão importante é essa funcionalidade para você?
+      options:
+        - Baixa - seria legal ter, mas não é urgente
+        - Média - ajudaria bastante no dia a dia
+        - Alta - economizaria muito tempo e esforço
+        - Crítica - é essencial para meu trabalho
+
+  - type: textarea
+    id: alternative-solutions
+    attributes:
+      label: Soluções Alternativas
+      description: Você pensou em outras formas de resolver esse problema?
+      placeholder: |
+        Ex: 
+        - Poderia ser um email automático com resumo semanal
+        - Ou uma exportação simples para Excel
+        - Ou apenas um contador na página principal
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Contexto Adicional
+      description: Qualquer outra informação que possa ajudar a entender sua necessidade
+      placeholder: |
+        Ex: 
+        - Outros sistemas da escola que fazem algo similar
+        - Regulamentações ou políticas que exigem isso
+        - Feedback de outros professores ou administradores
+
+  - type: markdown
+    attributes:
+      value: |
+        ---
+        
+        ## 📋 Para o Agente de Codificação Copilot
+        
+        **Critérios de Aceitação:**
+        - [ ] Analise a viabilidade técnica dentro da arquitetura atual
+        - [ ] Implemente seguindo os padrões do Clean Architecture existente
+        - [ ] Crie testes adequados para a nova funcionalidade
+        - [ ] Mantenha consistência com o design atual da interface
+        - [ ] Documente mudanças significativas de API ou banco de dados
+        - [ ] Valide que não quebra funcionalidades existentes
+        
+        **Dicas de Implementação:**
+        - Siga o padrão de Use Cases na camada application
+        - Use DTOs para transferência de dados
+        - Implemente repositories se precisar de novos dados
+        - Para UI, mantenha consistência com styles.css existente
+        - Para relatórios, considere usar endpoints REST retornando JSON
+        - Autenticação deve seguir o padrão atual (verificação de professor)
+        
+        **Contexto Técnico:**
+        - Frontend: HTML/CSS/JS vanilla, sem frameworks
+        - Backend: Spring Boot 3.x com Java 21
+        - Banco: MongoDB com Spring Data
+        - Arquitetura: Clean Architecture com camadas bem definidas
+        - Segurança: Basic auth, validação manual nos use cases
+        - Deployment: Maven, Docker opcional
+        
+        **Considerações de Design:**
+        - Interface responsiva já implementada
+        - Palette de cores e tipografia definidas
+        - Componentes modais e filtros já existentes
+        - Padrão de mensagens de sucesso/erro estabelecido

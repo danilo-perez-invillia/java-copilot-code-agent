@@ -1,0 +1,190 @@
+name: 🔐 Problema de Acesso ou Login
+description: Reportar problemas com login, permissões ou autenticação
+title: "[ACESSO] "
+labels: ["bug", "authentication"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## 🔐 Problema de Acesso ou Login
+        
+        Use este formulário para reportar problemas relacionados a login, senhas ou permissões no sistema.
+        
+        **Para o agente Copilot:** Este é um problema de autenticação/autorização que precisa ser resolvido.
+
+  - type: dropdown
+    id: access-problem-type
+    attributes:
+      label: Tipo de Problema
+      description: Qual tipo de problema você está enfrentando?
+      options:
+        - Não consigo fazer login (senha não funciona)
+        - Esqueci minha senha
+        - Minha conta foi bloqueada ou desativada
+        - Tenho login mas não consigo acessar certas funcionalidades
+        - Sistema diz que não tenho permissão para algo que deveria poder fazer
+        - Login funciona mas sou desconectado rapidamente
+        - Erro ao tentar fazer logout
+        - Outro problema de acesso
+    validations:
+      required: true
+
+  - type: input
+    id: username-affected
+    attributes:
+      label: Nome de Usuário
+      description: Qual nome de usuário está com problema? (não digite a senha)
+      placeholder: "Ex: teacher.silva"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: user-role
+    attributes:
+      label: Seu Papel no Sistema
+      description: Qual é sua função?
+      options:
+        - Professor
+        - Administrador
+        - Não sei/Não tenho certeza
+    validations:
+      required: true
+
+  - type: textarea
+    id: detailed-problem
+    attributes:
+      label: Descrição Detalhada do Problema
+      description: Explique exatamente o que acontece quando você tenta acessar o sistema
+      placeholder: |
+        Ex: 
+        - Digito meu usuário e senha na tela de login
+        - Clico em "Entrar"
+        - A página fica carregando por alguns segundos
+        - Depois aparece a mensagem "Credenciais inválidas"
+        - Tenho certeza que a senha está correta
+    validations:
+      required: true
+
+  - type: textarea
+    id: error-messages
+    attributes:
+      label: Mensagens de Erro
+      description: Que mensagens de erro você vê na tela?
+      placeholder: |
+        Ex: 
+        - "Credenciais inválidas"
+        - "Usuário não encontrado"
+        - "Acesso negado"
+        - Nenhuma mensagem, apenas não funciona
+
+  - type: dropdown
+    id: when-started
+    attributes:
+      label: Quando o problema começou?
+      description: Há quanto tempo você tem esse problema?
+      options:
+        - Hoje
+        - Ontem
+        - Esta semana
+        - Semana passada
+        - Há mais de uma semana
+        - Nunca funcionou (conta nova)
+        - Funcionava antes mas parou
+
+  - type: textarea
+    id: what-changed
+    attributes:
+      label: O que mudou recentemente?
+      description: Aconteceu alguma coisa diferente antes do problema começar?
+      placeholder: |
+        Ex: 
+        - Mudei minha senha
+        - Administrador criou minha conta
+        - Sistema foi atualizado
+        - Mudei de computador/navegador
+        - Nada que eu saiba
+
+  - type: dropdown
+    id: access-needed-for
+    attributes:
+      label: Para que você precisa do acesso?
+      description: Que tarefa você está tentando fazer?
+      options:
+        - Ver lista de atividades
+        - Inscrever estudantes em atividades
+        - Cancelar inscrições de estudantes
+        - Gerenciar atividades (criar/modificar)
+        - Acessar relatórios ou dados
+        - Administrar usuários
+        - Outro
+
+  - type: dropdown
+    id: urgency-level
+    attributes:
+      label: Urgência
+      description: Quão urgente é resolver este problema?
+      options:
+        - Baixa - posso esperar alguns dias
+        - Média - preciso acessar esta semana
+        - Alta - preciso acessar hoje
+        - Crítica - está impactando estudantes agora
+
+  - type: input
+    id: alternative-contact
+    attributes:
+      label: Contato Alternativo
+      description: Email ou telefone para contato urgente (opcional)
+      placeholder: "Ex: maria.silva@mergington.edu"
+
+  - type: textarea
+    id: temporary-workaround
+    attributes:
+      label: Solução Temporária Necessária
+      description: Existe algo que pode ser feito temporariamente enquanto o problema não é resolvido?
+      placeholder: |
+        Ex: 
+        - Outro professor pode fazer as inscrições por mim
+        - Preciso de uma senha temporária
+        - Posso usar a conta de outro professor
+        - Preciso que alguém faça X para mim
+
+  - type: markdown
+    attributes:
+      value: |
+        ---
+        
+        ## 📋 Para o Agente de Codificação Copilot
+        
+        **Critérios de Aceitação:**
+        - [ ] Investigar logs de autenticação e erro
+        - [ ] Verificar se usuário existe no banco de dados (collection teachers)
+        - [ ] Validar hash da senha se aplicável
+        - [ ] Confirmar roles e permissões do usuário
+        - [ ] Testar login com credenciais após correção
+        - [ ] Verificar se problema afeta outros usuários
+        
+        **Dicas de Investigação:**
+        - Verificar `MongoTeacherRepository` e dados na collection
+        - Revisar `AuthenticationUseCase` e validação de credenciais
+        - Checar configuração de segurança em `SecurityConfig`
+        - Verificar logs do Spring Boot para erros de autenticação
+        - Testar hash de senha com BouncyCastle Argon2
+        - Confirmar variáveis de ambiente para senhas padrão
+        
+        **Contexto de Segurança:**
+        - Senhas hasheadas com Argon2 (BouncyCastle)
+        - Autenticação básica via username/password
+        - Validação manual nos use cases, não no Spring Security
+        - Collection "teachers" no MongoDB com username como ID
+        - Roles: TEACHER, ADMIN (enum Teacher.Role)
+        - Senhas padrão configuráveis via env vars
+        
+        **Possíveis Causas:**
+        - Senha não foi hasheada corretamente durante setup
+        - Usuário não existe na collection teachers
+        - Problema na validação de credenciais
+        - Issues de encoding de senha
+        - Configuração incorreta de CORS/segurança
+        - Problema no frontend com envio de credenciais

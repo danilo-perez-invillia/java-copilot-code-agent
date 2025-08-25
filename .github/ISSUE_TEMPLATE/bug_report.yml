@@ -1,0 +1,127 @@
+name: 🐛 Relatório de Bug
+description: Reporte um problema ou erro no sistema de atividades
+title: "[BUG] "
+labels: ["bug", "needs-triage"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## 🐛 Relatório de Bug
+        
+        Obrigado por ajudar a melhorar o Sistema de Gestão Escolar! Use este formulário para reportar problemas ou erros que você encontrou.
+        
+        **Para o agente Copilot:** Este é um relatório de bug que requer análise e correção do comportamento incorreto do sistema.
+
+  - type: input
+    id: bug-summary
+    attributes:
+      label: Resumo do Problema
+      description: Descreva brevemente o que está acontecendo de errado
+      placeholder: "Ex: Não consigo cancelar a inscrição de um estudante na atividade de xadrez"
+    validations:
+      required: true
+
+  - type: textarea
+    id: bug-description
+    attributes:
+      label: Descrição Detalhada
+      description: Explique o problema com o máximo de detalhes possível
+      placeholder: |
+        Ex: Quando clico no botão "X" ao lado do nome do estudante na lista de participantes da atividade "Chess Club", nada acontece. O estudante continua na lista e não recebo nenhuma mensagem de erro.
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps-to-reproduce
+    attributes:
+      label: Passos para Reproduzir
+      description: Como você fez para encontrar este problema?
+      placeholder: |
+        1. Faço login como professor
+        2. Encontro a atividade "Chess Club"
+        3. Vejo a lista de participantes
+        4. Clico no "X" ao lado de um estudante
+        5. Nada acontece
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: Comportamento Esperado
+      description: O que deveria acontecer?
+      placeholder: "Ex: O estudante deveria ser removido da lista e eu deveria ver uma mensagem de confirmação"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: area-affected
+    attributes:
+      label: Área Afetada
+      description: Em que parte do sistema você encontrou o problema?
+      options:
+        - Login/Autenticação
+        - Listagem de Atividades
+        - Inscrição de Estudantes
+        - Cancelamento de Inscrições
+        - Filtros de Busca
+        - Interface Geral
+        - Outro
+    validations:
+      required: true
+
+  - type: input
+    id: user-account
+    attributes:
+      label: Conta de Usuário
+      description: Qual conta você estava usando? (apenas o nome de usuário, não a senha)
+      placeholder: "Ex: teacher.rodriguez"
+
+  - type: dropdown
+    id: browser
+    attributes:
+      label: Navegador
+      description: Qual navegador você estava usando?
+      options:
+        - Chrome
+        - Firefox
+        - Safari
+        - Edge
+        - Outro
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Informações Adicionais
+      description: Qualquer outra informação que possa ajudar a resolver o problema
+      placeholder: "Ex: Isso acontece apenas com atividades específicas? Acontece sempre ou só às vezes?"
+
+  - type: markdown
+    attributes:
+      value: |
+        ---
+        
+        ## 📋 Para o Agente de Codificação Copilot
+        
+        **Critérios de Aceitação:**
+        - [ ] O bug relatado deve ser reproduzido e confirmado
+        - [ ] A causa raiz deve ser identificada no código
+        - [ ] Uma correção deve ser implementada sem quebrar funcionalidades existentes
+        - [ ] Testes devem ser adicionados para prevenir regressão
+        - [ ] A correção deve ser validada manualmente
+        
+        **Dicas de Implementação:**
+        - Verifique os logs do navegador (console) para erros JavaScript
+        - Teste as requisições de API no backend
+        - Valide a autenticação e autorização
+        - Considere edge cases e validações de entrada
+        - Mantenha a arquitetura Clean existente
+        
+        **Contexto do Sistema:**
+        - Frontend: HTML/CSS/JavaScript vanilla
+        - Backend: Spring Boot com arquitetura limpa
+        - Banco: MongoDB com Spring Data
+        - Autenticação: Basic auth para professores
+        - Padrões: Repository pattern, Use Cases, DTOs
