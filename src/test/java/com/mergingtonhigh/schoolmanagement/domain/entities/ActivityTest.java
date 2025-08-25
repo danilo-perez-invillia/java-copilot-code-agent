@@ -118,7 +118,7 @@ class ActivityTest {
         // Act - Create activity without specifying type to test auto-detection
         Activity mangaActivity = new Activity(
                 "Manga Maniacs",
-                "Explore as histórias fantásticas dos personagens mais interessantes dos Mangás japoneses",
+                "Embarque numa jornada épica através dos mundos fantásticos dos mangás japoneses! Descubra heróis corajosos, vilões complexos e histórias que vão desde batalhas épicas até romances tocantes. Aqui você vai explorar universos como Naruto, Attack on Titan, One Piece e muito mais, discutindo teorias, criando fan art e mergulhando na rica cultura pop japonesa!",
                 "Terças-feiras, 19:00 - 20:30",
                 schedule,
                 15,
