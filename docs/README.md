@@ -140,6 +140,17 @@ src/main/java/com/mergingtonhigh/schoolmanagement/
 - Maven 3.8+
 - MongoDB 4.4+
 
+### Configurações do Sistema
+
+#### Segurança (SecurityConfig.java)
+- **Criptografia de senhas**: Argon2PasswordEncoder configurado para compatibilidade com Spring Security
+- **Autenticação permissiva**: Configuração temporária permite acesso a todos endpoints (`permitAll()`)
+- **CSRF desabilitado**: Para facilitar desenvolvimento e testes com formulários
+
+#### Web (WebConfig.java)
+- **Recursos estáticos**: Configuração para servir arquivos CSS, JS e HTML da pasta `/static`
+- **Mapeamento de rotas**: Configuração de handlers para recursos estáticos
+
 ### Variáveis de Ambiente
 
 Crie um arquivo `.env` baseado no `.env.example`
