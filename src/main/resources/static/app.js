@@ -15,6 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const dayFilters = document.querySelectorAll(".day-filter");
   const timeFilters = document.querySelectorAll(".time-filter");
   const difficultyFilters = document.querySelectorAll(".difficulty-filter");
+  const groupFilters = document.querySelectorAll(".group-filter");
 
   // Authentication elements
   const loginButton = document.getElementById("login-button");
@@ -35,6 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let currentDay = "";
   let currentTimeRange = "";
   let currentDifficulty = ""; // New difficulty filter state
+  let currentGroupBy = ""; // New group by filter state
 
   // Authentication state
   let currentUser = null;
@@ -64,6 +66,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const activeDifficultyFilter = document.querySelector(".difficulty-filter.active");
     if (activeDifficultyFilter) {
       currentDifficulty = activeDifficultyFilter.dataset.difficulty;
+    }
+
+    // Initialize group filter
+    const activeGroupFilter = document.querySelector(".group-filter.active");
+    if (activeGroupFilter) {
+      currentGroupBy = activeGroupFilter.dataset.group;
     }
   }
 
@@ -106,6 +114,22 @@ document.addEventListener("DOMContentLoaded", () => {
     // Update active class
     difficultyFilters.forEach((btn) => {
       if (btn.dataset.difficulty === difficulty) {
+        btn.classList.add("active");
+      } else {
+        btn.classList.remove("active");
+      }
+    });
+
+    displayFilteredActivities();
+  }
+
+  // Function to set group filter
+  function setGroupFilter(groupBy) {
+    currentGroupBy = groupBy;
+
+    // Update active class
+    groupFilters.forEach((btn) => {
+      if (btn.dataset.group === groupBy) {
         btn.classList.add("active");
       } else {
         btn.classList.remove("active");
@@ -442,48 +466,127 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // Exibir atividades filtradas
+    // Exibir atividades filtradas com ou sem agrupamento
+    if (currentGroupBy === "") {
+      // Sem agrupamento - comportamento original
+      Object.entries(filteredActivities).forEach(([name, details]) => {
+        renderActivityCard(name, details);
+      });
+    } else {
+      // Com agrupamento
+      displayGroupedActivities(filteredActivities);
+    }
+  }
+
+  // Função para exibir atividades agrupadas
+  function displayGroupedActivities(filteredActivities) {
+    const groups = {};
+
+    // Agrupar atividades
     Object.entries(filteredActivities).forEach(([name, details]) => {
-      renderActivityCard(name, details);
+      let groupKey = getGroupKey(details, currentGroupBy);
+      if (!groups[groupKey]) {
+        groups[groupKey] = [];
+      }
+      groups[groupKey].push({ name, details });
+    });
+
+    // Ordenar as chaves dos grupos
+    const sortedGroupKeys = Object.keys(groups).sort();
+
+    // Criar HTML para cada grupo
+    sortedGroupKeys.forEach(groupKey => {
+      const groupDiv = document.createElement("div");
+      groupDiv.className = "activity-group";
+
+      const groupTitle = document.createElement("h4");
+      groupTitle.textContent = getGroupDisplayName(groupKey, currentGroupBy);
+      groupDiv.appendChild(groupTitle);
+
+      const activitiesGrid = document.createElement("div");
+      activitiesGrid.className = "activities-grid";
+
+      groups[groupKey].forEach(({ name, details }) => {
+        const activityCard = createActivityCard(name, details);
+        activitiesGrid.appendChild(activityCard);
+      });
+
+      groupDiv.appendChild(activitiesGrid);
+      activitiesList.appendChild(groupDiv);
     });
   }
 
-  // Função para renderizar um cartão de atividade individual
-  function renderActivityCard(name, details) {
+  // Função para obter a chave do grupo com base no critério
+  function getGroupKey(details, groupBy) {
+    switch (groupBy) {
+      case "category":
+        return details.type ? details.type.name : 'academic';
+      case "day":
+        // Pegar o primeiro dia da atividade para simplificar
+        return details.scheduleDetails && details.scheduleDetails.days.length > 0 
+          ? details.scheduleDetails.days[0] 
+          : 'Sem horário definido';
+      case "difficulty":
+        return details.difficultyLevel ? details.difficultyLevel.name : 'Não especificado';
+      default:
+        return 'Outros';
+    }
+  }
+
+  // Função para obter o nome de exibição do grupo
+  function getGroupDisplayName(groupKey, groupBy) {
+    switch (groupBy) {
+      case "category":
+        const categoryMap = {
+          'sports': 'Esportes',
+          'arts': 'Artes',
+          'academic': 'Acadêmica',
+          'community': 'Comunidade',
+          'technology': 'Tecnologia'
+        };
+        return categoryMap[groupKey] || groupKey;
+      case "day":
+        const dayMap = {
+          'Monday': 'Segunda-feira',
+          'Tuesday': 'Terça-feira',
+          'Wednesday': 'Quarta-feira',
+          'Thursday': 'Quinta-feira',
+          'Friday': 'Sexta-feira',
+          'Saturday': 'Sábado',
+          'Sunday': 'Domingo'
+        };
+        return dayMap[groupKey] || groupKey;
+      case "difficulty":
+        const difficultyMap = {
+          'beginner': 'Iniciante',
+          'intermediate': 'Intermediário',
+          'advanced': 'Avançado'
+        };
+        return difficultyMap[groupKey] || groupKey;
+      default:
+        return groupKey;
+    }
+  }
+
+  // Função para criar um cartão de atividade (extraída da lógica original)
+  function createActivityCard(name, details) {
     const activityCard = document.createElement("div");
     activityCard.className = "activity-card";
 
     // Calcular vagas e capacidade
     const totalSpots = details.maxParticipants;
-    const takenSpots = details.participants.length;
+    const takenSpots = details.participants ? details.participants.length : 0;
     const spotsLeft = totalSpots - takenSpots;
     const capacityPercentage = (takenSpots / totalSpots) * 100;
     const isFull = spotsLeft <= 0;
 
-    // Determinar classe de status de capacidade
+    // Determinar classe de capacidade
     let capacityStatusClass = "capacity-available";
     if (isFull) {
       capacityStatusClass = "capacity-full";
     } else if (capacityPercentage >= 75) {
       capacityStatusClass = "capacity-near-full";
     }
-
-    // Usar informações de tipo fornecidas pelo backend
-    const typeInfo = {
-      label: details.type.label,
-      color: details.type.color,
-      textColor: details.type.textColor
-    };
-
-    // Formatar o cronograma usando a função auxiliar
-    const formattedSchedule = formatSchedule(details);
-
-    // Criar tag de atividade
-    const tagHtml = `
-      <span class="activity-tag" style="background-color: ${typeInfo.color}; color: ${typeInfo.textColor}">
-        ${typeInfo.label}
-      </span>
-    `;
 
     // Criar indicador de capacidade
     const capacityIndicator = `
@@ -497,6 +600,23 @@ document.addEventListener("DOMContentLoaded", () => {
         </div>
       </div>
     `;
+
+    // Usar informações de tipo fornecidas pelo backend
+    const typeInfo = {
+      label: details.type.label,
+      color: details.type.color,
+      textColor: details.type.textColor
+    };
+
+    // Criar tag de atividade
+    const tagHtml = `
+      <span class="activity-tag" style="background-color: ${typeInfo.color}; color: ${typeInfo.textColor}">
+        ${typeInfo.label}
+      </span>
+    `;
+
+    // Formatar o cronograma usando a função auxiliar
+    const formattedSchedule = formatSchedule(details);
 
     activityCard.innerHTML = `
       ${tagHtml}
@@ -566,6 +686,12 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
+    return activityCard;
+  }
+
+  // Função para renderizar um cartão de atividade individual
+  function renderActivityCard(name, details) {
+    const activityCard = createActivityCard(name, details);
     activitiesList.appendChild(activityCard);
   }
 
@@ -629,6 +755,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Update current difficulty filter and display filtered activities
       currentDifficulty = button.dataset.difficulty;
+      displayFilteredActivities();
+    });
+  });
+
+  // Add event listeners to group filter buttons
+  groupFilters.forEach((button) => {
+    button.addEventListener("click", () => {
+      // Update active class
+      groupFilters.forEach((btn) => btn.classList.remove("active"));
+      button.classList.add("active");
+
+      // Update current group filter and display filtered activities
+      currentGroupBy = button.dataset.group;
       displayFilteredActivities();
     });
   });
