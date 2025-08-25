@@ -27,18 +27,24 @@ src/main/java/com/mergingtonhigh/schoolmanagement/
 │   │   ├── ActivityRepository.java
 │   │   └── TeacherRepository.java
 │   └── valueobjects/         # Objetos de valor
+│       ├── ActivityType.java # Tipos de atividade (enum)
 │       ├── Email.java        # Validação de email
 │       └── ScheduleDetails.java # Detalhes de horário
 ├── application/              # 🔧 Camada de Aplicação
 │   ├── dtos/                 # Data Transfer Objects
 │   │   ├── ActivityDTO.java
+│   │   ├── ActivityTypeDTO.java
+│   │   ├── LoginRequestDTO.java
 │   │   ├── StudentRegistrationDTO.java
 │   │   └── TeacherDTO.java
 │   └── usecases/             # Casos de uso
 │       ├── ActivityUseCase.java
+│       ├── AuthenticationUseCase.java
 │       └── StudentRegistrationUseCase.java
 ├── infrastructure/           # 🏭 Camada de Infraestrutura
 │   ├── config/               # Configurações
+│   │   ├── SecurityConfig.java
+│   │   └── WebConfig.java
 │   ├── migrations/           # Migrações do banco
 │   │   └── V001_InitialDatabaseSetup.java
 │   └── persistence/          # Implementações de repositório
@@ -48,7 +54,9 @@ src/main/java/com/mergingtonhigh/schoolmanagement/
 │       └── TeacherRepositoryImpl.java
 └── presentation/             # 🎨 Camada de Apresentação
     ├── controllers/          # Controllers REST
-    │   └── ActivityController.java
+    │   ├── ActivityController.java
+    │   ├── AuthController.java
+    │   └── StaticController.java
     └── mappers/              # Mapeadores DTO ↔ Entity
         ├── ActivityMapper.java
         └── TeacherMapper.java
@@ -100,9 +108,11 @@ src/main/java/com/mergingtonhigh/schoolmanagement/
 
 ### 👨‍🏫 Sistema de Autenticação
 
-- **Login de professores** com username/senha
+- **Login de professores** com username/senha via endpoint REST
 - **Controle de acesso** baseado em roles (TEACHER/ADMIN)
-- **Autenticação requerida** para inscrições
+- **Verificação de sessão** por username
+- **Autenticação requerida** para inscrições e operações administrativas
+- **Criptografia segura** com Argon2 para senhas
 
 ### 📝 Gestão de Inscrições
 
@@ -115,10 +125,12 @@ src/main/java/com/mergingtonhigh/schoolmanagement/
 
 ### 🎨 Interface Web
 
-- **Design responsivo** e intuitivo
-- **Filtros dinâmicos** para busca de atividades
-- **Modais** para login e inscrições
-- **Feedback visual** para ações do usuário
+- **Design responsivo** e intuitivo com CSS moderno
+- **Filtros dinâmicos** para busca de atividades por categoria e horário
+- **Sistema de login** com modal interativo
+- **Feedback visual** para ações do usuário e estados de carregamento
+- **Categorização automática** de atividades com cores e ícones
+- **Gestão de capacidade** com indicadores visuais de vagas disponíveis
 
 ## 🔧 Configuração e Execução
 
@@ -172,6 +184,17 @@ Crie um arquivo `.env` baseado no `.env.example`
 
 ### Endpoints Principais
 
+#### Autenticação
+
+```http
+POST /auth/login
+Content-Type: application/x-www-form-urlencoded
+
+username=teacher.rodriguez&password=senha123
+
+GET /auth/check-session?username=teacher.rodriguez
+```
+
 #### Atividades
 
 ```http
@@ -192,6 +215,13 @@ POST /activities/{activityName}/unregister
 Content-Type: application/x-www-form-urlencoded
 
 email=student@mergington.edu&teacher_username=teacher1
+```
+
+#### Recursos Estáticos
+
+```http
+GET /                        # Página principal
+GET /static/*                # Recursos estáticos (CSS, JS, imagens)
 ```
 
 ## 🧪 Testes
@@ -225,22 +255,33 @@ O sistema utiliza **Mongock** para realizar migrações automáticas do banco de
 
 ### Professores Padrão
 
-- **admin** - Administrador principal
-- **teacher.rodriguez** - Professor de artes
-- **teacher.chen** - Professor de xadrez
+- **principal** - Administrador principal (Diretor Martinez)
+- **mrodriguez** - Professor de artes (Sr. Rodriguez)
+- **mchen** - Professor de xadrez (Sra. Chen)
 
 ### Atividades Exemplo
 
 - **Art Club** - Terças e quintas, 15:30-17:00
 - **Chess Club** - Segundas e quartas, 15:30-17:00
 - **Drama Club** - Quartas e sextas, 16:00-18:00
+- **Science Olympiad** - Sábados, 09:00-12:00
+- **Community Service** - Fins de semana, flexível
+
+### Configuração de Senhas
+
+As senhas dos usuários padrão podem ser configuradas via variáveis de ambiente:
+- `TEACHER_RODRIGUEZ_PASSWORD` (padrão: "art123")
+- `TEACHER_CHEN_PASSWORD` (padrão: "chess123")  
+- `PRINCIPAL_PASSWORD` (padrão: "admin123")
 
 ## 🔒 Segurança
 
-- **Autenticação HTTP Basic** para endpoints administrativos
-- **Criptografia Argon2** para senhas
-- **Validação de dados** em todas as camadas
-- **CORS** configurado para desenvolvimento
+- **Sistema de autenticação customizado** para professores via endpoints REST
+- **Criptografia Argon2** para senhas (compatível com BouncyCastle)
+- **Validação de dados** em todas as camadas do sistema
+- **CORS** configurado para desenvolvimento (origins: "*")
+- **Configuração de segurança flexível** (Spring Security com acesso permitido para desenvolvimento)
+- **Autenticação baseada em sessão simples** via username/password
 
 ## 📈 Monitoramento
 
