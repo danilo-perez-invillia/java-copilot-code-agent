@@ -1,0 +1,152 @@
+name: ➕ Nova Atividade
+description: Solicitar criação de uma nova atividade extracurricular
+title: "[NOVA ATIVIDADE] "
+labels: ["enhancement", "new-activity"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## ➕ Solicitação de Nova Atividade
+        
+        Use este formulário para solicitar a criação de uma nova atividade extracurricular no sistema.
+        
+        **Para o agente Copilot:** Esta é uma solicitação para adicionar uma nova atividade ao sistema de gestão escolar.
+
+  - type: input
+    id: activity-name
+    attributes:
+      label: Nome da Atividade
+      description: Como a atividade deve se chamar?
+      placeholder: "Ex: Clube de Robótica"
+    validations:
+      required: true
+
+  - type: textarea
+    id: activity-description
+    attributes:
+      label: Descrição da Atividade
+      description: Descreva o que é a atividade e o que os estudantes farão
+      placeholder: |
+        Ex: Uma oportunidade para estudantes aprenderem programação e construção de robôs. Os participantes trabalharão em projetos práticos, desde robôs simples até participação em competições regionais.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: activity-type
+    attributes:
+      label: Tipo de Atividade
+      description: Em que categoria esta atividade se encaixa?
+      options:
+        - Esportes
+        - Artes
+        - Acadêmico
+        - Comunidade
+        - Tecnologia
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: schedule-days
+    attributes:
+      label: Dias da Semana
+      description: Em que dias a atividade acontecerá?
+      options:
+        - label: Segunda-feira
+          value: monday
+        - label: Terça-feira
+          value: tuesday
+        - label: Quarta-feira
+          value: wednesday
+        - label: Quinta-feira
+          value: thursday
+        - label: Sexta-feira
+          value: friday
+        - label: Sábado
+          value: saturday
+        - label: Domingo
+          value: sunday
+
+  - type: input
+    id: start-time
+    attributes:
+      label: Horário de Início
+      description: A que horas a atividade começa?
+      placeholder: "Ex: 15:30"
+    validations:
+      required: true
+
+  - type: input
+    id: end-time
+    attributes:
+      label: Horário de Término
+      description: A que horas a atividade termina?
+      placeholder: "Ex: 17:00"
+    validations:
+      required: true
+
+  - type: input
+    id: max-participants
+    attributes:
+      label: Número Máximo de Participantes
+      description: Quantos estudantes podem participar?
+      placeholder: "Ex: 15"
+    validations:
+      required: true
+
+  - type: input
+    id: responsible-teacher
+    attributes:
+      label: Professor Responsável
+      description: Qual professor vai conduzir esta atividade?
+      placeholder: "Ex: Prof. Silva"
+    validations:
+      required: true
+
+  - type: textarea
+    id: special-requirements
+    attributes:
+      label: Requisitos Especiais
+      description: Existem materiais especiais, local específico ou outros requisitos?
+      placeholder: "Ex: Precisa de laboratório de informática, materiais de eletrônica, etc."
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Prioridade
+      description: Quão urgente é esta solicitação?
+      options:
+        - Baixa - pode esperar algumas semanas
+        - Média - seria bom ter em 1-2 semanas
+        - Alta - precisamos urgentemente
+
+  - type: markdown
+    attributes:
+      value: |
+        ---
+        
+        ## 📋 Para o Agente de Codificação Copilot
+        
+        **Critérios de Aceitação:**
+        - [ ] Nova atividade deve ser criada no banco de dados usando migração Mongock
+        - [ ] Atividade deve aparecer na listagem principal do frontend
+        - [ ] Filtros de categoria e horário devem funcionar corretamente
+        - [ ] Professores devem conseguir inscrever estudantes na nova atividade
+        - [ ] Validações de capacidade máxima devem funcionar
+        - [ ] Interface deve mostrar informações corretas (horário, tipo, descrição)
+        
+        **Dicas de Implementação:**
+        - Adicione a atividade em `V001_InitialDatabaseSetup.java` ou crie nova migração
+        - Use o enum `ActivityType` existente para categorização
+        - Crie objeto `ScheduleDetails` com os dias e horários informados
+        - Siga o padrão das atividades existentes (Chess Club, Art Club, etc.)
+        - Teste os filtros de frontend (dia, horário, categoria)
+        - Valide que a capacidade máxima é respeitada
+        
+        **Contexto do Sistema:**
+        - Atividades são armazenadas como documentos MongoDB
+        - Frontend usa filtros JavaScript para categorias e horários
+        - Schedule usa `LocalTime` para horários e lista de dias da semana
+        - ActivityType determina cor e categoria na interface
+        - Professores podem inscrever estudantes via formulário modal

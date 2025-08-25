@@ -151,6 +151,27 @@ class ActivityTest {
         assertEquals(DifficultyLevel.INTERMEDIATE, activity.getDifficultyLevel());
     }
 
+    @Test
+    void shouldClassifyMangaActivityAsArts() {
+        // Arrange
+        ScheduleDetails schedule = new ScheduleDetails(
+                List.of("Tuesday"),
+                LocalTime.of(19, 0),
+                LocalTime.of(20, 30));
+
+        // Act - Create activity without specifying type to test auto-detection
+        Activity mangaActivity = new Activity(
+                "Manga Maniacs",
+                "Embarque numa jornada épica através dos mundos fantásticos dos mangás japoneses! Descubra heróis corajosos, vilões complexos e histórias que vão desde batalhas épicas até romances tocantes. Aqui você vai explorar universos como Naruto, Attack on Titan, One Piece e muito mais, discutindo teorias, criando fan art e mergulhando na rica cultura pop japonesa!",
+                "Terças-feiras, 19:00 - 20:30",
+                schedule,
+                15,
+                null); // Let it auto-determine the type
+
+        // Assert
+        assertEquals(ActivityType.ARTS, mangaActivity.getType());
+    }
+
     private Activity createTestActivity() {
         ScheduleDetails schedule = new ScheduleDetails(
                 List.of("Monday"),

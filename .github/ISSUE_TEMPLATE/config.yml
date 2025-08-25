@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 📚 Documentação do Sistema
+    url: https://github.com/danilo-perez-invillia/java-copilot-code-agent/blob/main/docs/README.md
+    about: Consulte a documentação técnica do sistema de gestão escolar
+  - name: 💬 Discussões da Comunidade
+    url: https://github.com/danilo-perez-invillia/java-copilot-code-agent/discussions
+    about: Faça perguntas gerais ou participe de discussões sobre o sistema
+  - name: 🚨 Suporte Urgente
+    url: mailto:suporte@mergington.edu
+    about: Para problemas críticos que afetam estudantes, entre em contato diretamente

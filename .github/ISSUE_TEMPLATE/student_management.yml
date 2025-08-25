@@ -1,0 +1,198 @@
+name: 👥 Gestão de Estudantes
+description: Problemas ou solicitações relacionadas a estudantes e inscrições
+title: "[ESTUDANTES] "
+labels: ["enhancement", "student-management"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## 👥 Gestão de Estudantes
+        
+        Use este formulário para problemas ou solicitações relacionadas ao gerenciamento de estudantes e suas inscrições.
+        
+        **Para o agente Copilot:** Esta é uma solicitação relacionada ao gerenciamento de estudantes no sistema.
+
+  - type: dropdown
+    id: request-type
+    attributes:
+      label: Tipo de Solicitação
+      description: O que você precisa fazer relacionado aos estudantes?
+      options:
+        - Inscrever estudante em atividade específica
+        - Cancelar inscrição de estudante
+        - Transferir estudante entre atividades
+        - Resolver problema com email duplicado
+        - Buscar informações sobre estudante específico
+        - Resolver problema com capacidade lotada
+        - Criar lista de espera para atividade
+        - Outro problema com estudantes
+    validations:
+      required: true
+
+  - type: input
+    id: student-email
+    attributes:
+      label: Email do Estudante
+      description: Qual o email do estudante envolvido? (se aplicável)
+      placeholder: "Ex: joao.silva@mergington.edu"
+
+  - type: input
+    id: activity-name
+    attributes:
+      label: Nome da Atividade
+      description: Qual atividade está envolvida? (se aplicável)
+      placeholder: "Ex: Chess Club"
+
+  - type: textarea
+    id: detailed-request
+    attributes:
+      label: Descrição Detalhada
+      description: Explique exatamente o que você precisa ou o problema que encontrou
+      placeholder: |
+        Ex: 
+        - O estudante joão.silva@mergington.edu quer se inscrever no Chess Club, mas quando clico em inscrever aparece que a atividade está lotada. Porém, vejo apenas 14 estudantes na lista e a capacidade é 15.
+        - Preciso transferir a estudante maria.santos@mergington.edu do Art Club para o Drama Club porque ela mudou de interesse.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: attempted-solution
+    attributes:
+      label: O que você já tentou?
+      description: Como você tentou resolver isso?
+      options:
+        - Tentei inscrever pela interface normal
+        - Tentei cancelar e inscrever novamente
+        - Verifiquei se o email está correto
+        - Tentei em horário diferente
+        - Pedi ajuda a outro professor
+        - Ainda não tentei nada
+        - Outro (especificar abaixo)
+
+  - type: textarea
+    id: attempted-details
+    attributes:
+      label: Detalhes do que foi tentado
+      description: Se escolheu "Outro" acima ou quer dar mais detalhes, explique aqui
+      placeholder: "Ex: Tentei três vezes durante a manhã, mas sempre dá erro..."
+
+  - type: dropdown
+    id: error-received
+    attributes:
+      label: Mensagem de Erro
+      description: Que mensagem de erro você viu (se houver)?
+      options:
+        - Atividade lotada
+        - Email inválido
+        - Estudante já inscrito
+        - Erro de autenticação
+        - Nenhuma mensagem, simplesmente não funciona
+        - Outra mensagem (especificar abaixo)
+
+  - type: input
+    id: other-error
+    attributes:
+      label: Outra Mensagem de Erro
+      description: Se escolheu "Outra mensagem" acima, digite exatamente o que apareceu
+      placeholder: "Ex: Erro interno do servidor"
+
+  - type: dropdown
+    id: impact-level
+    attributes:
+      label: Impacto
+      description: Como esse problema está afetando você ou os estudantes?
+      options:
+        - Baixo - estudante pode esperar
+        - Médio - estudante está ansioso para participar
+        - Alto - estudante pode perder interesse se demorar
+        - Crítico - impacta outros estudantes ou prazos importantes
+
+  - type: textarea
+    id: parent-involvement
+    attributes:
+      label: Envolvimento dos Pais
+      description: Os pais do estudante estão cientes ou pressionando por uma solução?
+      placeholder: |
+        Ex: 
+        - Pais perguntaram sobre a inscrição
+        - Pais reclamaram do problema
+        - Estudante está pedindo para resolver
+        - Não há pressão dos pais ainda
+
+  - type: dropdown
+    id: preferred-solution
+    attributes:
+      label: Solução Preferida
+      description: Como você gostaria que isso fosse resolvido?
+      options:
+        - Inscrever manualmente pelo sistema
+        - Aumentar a capacidade da atividade
+        - Criar lista de espera
+        - Transferir para atividade similar
+        - Investigar e corrigir o erro
+        - Não sei, preciso de orientação
+
+  - type: input
+    id: deadline
+    attributes:
+      label: Prazo
+      description: Existe algum prazo para resolver isso?
+      placeholder: "Ex: Antes da próxima aula (quinta-feira)"
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Contexto Adicional
+      description: Qualquer outra informação que possa ajudar
+      placeholder: |
+        Ex: 
+        - Esse problema acontece com outros estudantes também
+        - O estudante tem necessidades especiais
+        - É a primeira vez que tento inscrever alguém
+        - Problema similar aconteceu semana passada
+
+  - type: markdown
+    attributes:
+      value: |
+        ---
+        
+        ## 📋 Para o Agente de Codificação Copilot
+        
+        **Critérios de Aceitação:**
+        - [ ] Investigar estado atual do estudante e atividade no banco de dados
+        - [ ] Identificar causa raiz do problema (validação, capacidade, duplicata, etc.)
+        - [ ] Implementar correção que resolva o problema específico
+        - [ ] Validar que estudante fica no estado correto após correção
+        - [ ] Testar cenários similares para prevenir reincidência
+        - [ ] Verificar se correção não afeta outros estudantes
+        
+        **Dicas de Investigação:**
+        - Verificar collection activities para capacidade real vs participantes
+        - Validar formato do email (objeto Email do domínio)
+        - Checar se estudante existe em participants array
+        - Testar validações do StudentRegistrationUseCase
+        - Verificar logs de erro no backend
+        - Confirmar autenticação do professor fazendo a solicitação
+        
+        **Possíveis Soluções:**
+        - Update direto no MongoDB se problema de dados
+        - Correção de validação se problema de lógica
+        - Ajuste de capacidade se necessário
+        - Implementação de lista de espera se solicitado
+        - Melhoria na interface para mostrar melhor os erros
+        
+        **Contexto de Dados:**
+        - Estudantes são representados apenas por email (string)
+        - Array participants[] em cada Activity
+        - Validação de email na classe Email (value object)
+        - Capacidade controlada por maxParticipants vs participants.size()
+        - Operações via StudentRegistrationUseCase
+        
+        **Validações Importantes:**
+        - Email deve ser válido e único por atividade
+        - Capacidade máxima deve ser respeitada
+        - Professor deve estar autenticado para fazer inscrições
+        - Atividade deve existir no sistema
+        - Estados de dados devem ficar consistentes

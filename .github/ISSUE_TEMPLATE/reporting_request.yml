@@ -1,0 +1,233 @@
+name: 📊 Solicitação de Relatório ou Dados
+description: Solicitar relatórios, exportação de dados ou informações específicas
+title: "[RELATÓRIO] "
+labels: ["enhancement", "reporting"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## 📊 Solicitação de Relatório ou Dados
+        
+        Use este formulário para solicitar relatórios, exportação de dados ou informações específicas do sistema.
+        
+        **Para o agente Copilot:** Esta é uma solicitação para implementar funcionalidade de relatórios ou exportação de dados.
+
+  - type: input
+    id: report-title
+    attributes:
+      label: Nome do Relatório
+      description: Como você chamaria este relatório?
+      placeholder: "Ex: Relatório de Participação por Atividade"
+    validations:
+      required: true
+
+  - type: textarea
+    id: report-purpose
+    attributes:
+      label: Finalidade do Relatório
+      description: Para que você precisa dessas informações?
+      placeholder: |
+        Ex: 
+        - Prestação de contas para a diretoria
+        - Planejamento de atividades para o próximo semestre
+        - Identificar atividades populares e menos procuradas
+        - Relatório mensal para pais sobre participação dos filhos
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: data-needed
+    attributes:
+      label: Dados Necessários
+      description: Que informações você precisa no relatório?
+      options:
+        - label: Lista de todas as atividades
+          value: activities_list
+        - label: Número de estudantes por atividade
+          value: student_count
+        - label: Lista de estudantes inscritos (com nomes/emails)
+          value: student_details
+        - label: Atividades mais populares
+          value: popular_activities
+        - label: Atividades com vagas disponíveis
+          value: available_spots
+        - label: Horários das atividades
+          value: schedules
+        - label: Professores responsáveis
+          value: teachers
+        - label: Capacidade vs. inscrições atuais
+          value: capacity_usage
+        - label: Histórico de inscrições/cancelamentos
+          value: registration_history
+
+  - type: dropdown
+    id: time-period
+    attributes:
+      label: Período de Tempo
+      description: Que período o relatório deve cobrir?
+      options:
+        - Situação atual (snapshot de hoje)
+        - Esta semana
+        - Este mês
+        - Este semestre
+        - Este ano letivo
+        - Período personalizado (especificar abaixo)
+        - Histórico completo
+    validations:
+      required: true
+
+  - type: input
+    id: custom-period
+    attributes:
+      label: Período Personalizado
+      description: Se escolheu "Período personalizado", especifique as datas
+      placeholder: "Ex: De 01/03/2025 a 31/05/2025"
+
+  - type: checkboxes
+    id: filter-options
+    attributes:
+      label: Filtros Necessários
+      description: O relatório precisa ser filtrado por algum critério?
+      options:
+        - label: Por tipo de atividade (Esportes, Artes, etc.)
+          value: activity_type
+        - label: Por dia da semana
+          value: day_of_week
+        - label: Por horário (manhã, tarde, fim de semana)
+          value: time_range
+        - label: Por professor específico
+          value: teacher
+        - label: Por capacidade (atividades lotadas, com vagas, etc.)
+          value: capacity_status
+        - label: Por estudante específico
+          value: specific_student
+
+  - type: dropdown
+    id: output-format
+    attributes:
+      label: Formato de Saída
+      description: Como você gostaria de receber o relatório?
+      options:
+        - Visualização na tela (HTML/página web)
+        - Download em PDF
+        - Download em Excel/CSV
+        - Email automático
+        - Não tenho preferência
+    validations:
+      required: true
+
+  - type: dropdown
+    id: frequency
+    attributes:
+      label: Frequência
+      description: Você precisará deste relatório regularmente?
+      options:
+        - Apenas uma vez
+        - Semanalmente
+        - Mensalmente
+        - No final de cada semestre
+        - Anualmente
+        - Sob demanda (quando solicitar)
+
+  - type: textarea
+    id: specific-questions
+    attributes:
+      label: Perguntas Específicas
+      description: Que perguntas você espera que o relatório responda?
+      placeholder: |
+        Ex: 
+        - Quantos estudantes estão participando de atividades esportivas?
+        - Qual atividade tem maior lista de espera?
+        - Quais horários são mais populares?
+        - Há estudantes que participam de muitas atividades?
+        - Quais atividades precisam de mais divulgação?
+    validations:
+      required: true
+
+  - type: textarea
+    id: current-process
+    attributes:
+      label: Processo Atual
+      description: Como você coleta essas informações hoje?
+      placeholder: |
+        Ex: 
+        - Abro cada atividade individualmente e conto manualmente
+        - Anoto tudo em papel durante a semana
+        - Peço para cada professor me mandar os dados
+        - Não consigo coletar essas informações atualmente
+
+  - type: dropdown
+    id: urgency
+    attributes:
+      label: Urgência
+      description: Quando você precisa deste relatório?
+      options:
+        - Esta semana
+        - Próximas duas semanas
+        - Próximo mês
+        - Não é urgente
+        - Tenho uma data específica (especificar abaixo)
+
+  - type: input
+    id: specific-deadline
+    attributes:
+      label: Data Específica
+      description: Se tem uma data específica, qual é?
+      placeholder: "Ex: 15/04/2025 (para reunião com diretoria)"
+
+  - type: textarea
+    id: additional-requirements
+    attributes:
+      label: Requisitos Adicionais
+      description: Alguma outra especificação importante para o relatório?
+      placeholder: |
+        Ex: 
+        - Precisa ser aprovado pela diretoria antes de compartilhar
+        - Dados pessoais devem ser anonimizados
+        - Deve incluir gráficos ou apenas tabelas
+        - Precisa ser compatível com sistema X da escola
+
+  - type: markdown
+    attributes:
+      value: |
+        ---
+        
+        ## 📋 Para o Agente de Codificação Copilot
+        
+        **Critérios de Aceitação:**
+        - [ ] Implementar endpoint de API para gerar o relatório solicitado
+        - [ ] Criar queries adequadas no MongoDB para extrair os dados
+        - [ ] Implementar filtros conforme especificado
+        - [ ] Gerar formato de saída solicitado (HTML, PDF, CSV)
+        - [ ] Validar autenticação/autorização para acesso ao relatório
+        - [ ] Testar com dados reais para verificar precisão
+        
+        **Dicas de Implementação:**
+        - Criar novo Use Case na camada application para o relatório
+        - Usar agregações MongoDB para queries complexas
+        - Para PDF: considere usar biblioteca como iText ou Flying Saucer
+        - Para CSV/Excel: use OpenCSV ou Apache POI
+        - Implementar paginação se relatório for muito grande
+        - Cachear resultados se relatório for pesado
+        - Adicionar logs para auditoria de acesso aos relatórios
+        
+        **Contexto dos Dados:**
+        - Activities collection: {name, description, participants[], maxParticipants, type, scheduleDetails}
+        - Teachers collection: {username, displayName, role}
+        - Participants são arrays de strings (emails)
+        - ScheduleDetails contém days[] e startTime/endTime
+        - ActivityType enum para categorização
+        
+        **Considerações de Segurança:**
+        - Relatórios devem respeitar níveis de acesso (TEACHER vs ADMIN)
+        - Dados pessoais podem precisar de anonimização
+        - Implementar rate limiting para relatórios pesados
+        - Validar autorização para acessar dados específicos
+        
+        **Padrões de UI:**
+        - Se for tela web, usar estilos existentes em styles.css
+        - Implementar loading states para relatórios que demoram
+        - Usar modals para configuração de filtros
+        - Manter consistência com interface atual
