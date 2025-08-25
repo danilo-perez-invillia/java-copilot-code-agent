@@ -26,6 +26,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const closeLoginModal = document.querySelector(".close-login-modal");
   const loginMessage = document.getElementById("login-message");
 
+  // Theme toggle elements
+  const themeToggle = document.getElementById("theme-toggle");
+  const themeIcon = document.getElementById("theme-icon");
+
 
 
   // State for activities and filters
@@ -38,6 +42,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Authentication state
   let currentUser = null;
+
+  // Theme state
+  let isDarkTheme = localStorage.getItem("darkTheme") === "true";
 
   // Time range mappings for the dropdown
   const timeRanges = {
@@ -270,6 +277,33 @@ document.addEventListener("DOMContentLoaded", () => {
     const password = document.getElementById("password").value;
     await login(username, password);
   });
+
+  // Theme toggle functions
+  function initializeTheme() {
+    if (isDarkTheme) {
+      document.body.classList.add("dark-theme");
+      themeIcon.textContent = "☀️";
+    } else {
+      document.body.classList.remove("dark-theme");
+      themeIcon.textContent = "🌙";
+    }
+  }
+
+  function toggleTheme() {
+    isDarkTheme = !isDarkTheme;
+    localStorage.setItem("darkTheme", isDarkTheme.toString());
+    
+    if (isDarkTheme) {
+      document.body.classList.add("dark-theme");
+      themeIcon.textContent = "☀️";
+    } else {
+      document.body.classList.remove("dark-theme");
+      themeIcon.textContent = "🌙";
+    }
+  }
+
+  // Theme toggle event listener
+  themeToggle.addEventListener("click", toggleTheme);
 
   // Show loading skeletons
   function showLoadingSkeletons() {
@@ -855,6 +889,7 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   // Initialize app
+  initializeTheme();
   checkAuthentication();
   initializeFilters();
   fetchActivities();
